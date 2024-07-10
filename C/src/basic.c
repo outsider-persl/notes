@@ -1,7 +1,9 @@
 #include <stdio.h>
 #include <limits.h>
 #include <float.h>
+#include <sys/time.h>
 #include "basic.h"
+#include <string.h>
 
 void print_type_ranges()
 {
@@ -54,6 +56,7 @@ void print_type_ranges()
     printf("  Long double epsilon: %Le\n", LDBL_EPSILON);
 }
 
+// const and #define
 #define PI 3.14159
 void fun_const()
 {
@@ -62,9 +65,99 @@ void fun_const()
     printf("const_integter : %d\n", const_integter);
 }
 
+// macro
 #define SQUARE(x) (x * x)
 void fun_macro(int num)
 {
     int square_resule = SQUARE(num);
     printf("%d\n", square_resule);
+}
+void func_without_register()
+{
+    int sum = 0;
+
+    struct timeval start, end;
+    float elapsed_time;
+
+    gettimeofday(&start, NULL); // 记录开始时间
+
+    long count = 1000000000;
+    for (int i = 0; i < count; i++)
+    {
+        sum += i;
+        sum -= i;
+        sum -= i;
+    }
+
+    gettimeofday(&end, NULL); // 记录结束时间
+    // 计算耗时（秒为单位）
+    elapsed_time = (end.tv_sec - start.tv_sec) + (end.tv_usec - start.tv_usec) / 1000000.0;
+    printf("计算 %ld 次（不使用 register）所用时间：%f 秒\n", count, elapsed_time);
+}
+
+void func_with_register()
+{
+    register int sum = 0;
+
+    struct timeval start, end;
+    float elapsed_time;
+
+    gettimeofday(&start, NULL); // 记录开始时间
+
+    long count = 1000000000;
+    for (register int i = 0; i < count; i++)
+    {
+        sum += i;
+        sum -= i;
+        sum -= i;
+    }
+
+    gettimeofday(&end, NULL); // 记录结束时间
+    // 计算耗时（秒为单位）
+    elapsed_time = (end.tv_sec - start.tv_sec) + (end.tv_usec - start.tv_usec) / 1000000.0;
+    printf("计算 %ld 次（使用 register）所用时间：%f 秒\n", count, elapsed_time);
+}
+
+void count_int(int count)
+{
+    static int integer = 3;
+    for (int i = 0; i < count; i++)
+    {
+        printf("count:  %d\t integer: %d\n", i, integer++); /* code */
+    }
+}
+
+extern int global_var;
+// 存储类
+void fun_auto()
+{
+    // 1. auto
+    int num = 9;
+    auto int auto_num = 9; // 和上面一样，auto是默认存储类
+
+    // 2. register
+    // func_without_register();
+    // func_with_register();
+    printf("auto num %d\n", auto_num);
+
+    // 3. static
+    printf("one --\n");
+    count_int(5);
+    printf("tow --\n");
+    count_int(5);
+
+    // 4. extern
+    global_var += 1;
+    static_var += 1;
+    printf("global_var: %d!\n", global_var);
+    printf("static_var: %d!\n", static_var);
+}
+
+// test
+void test()
+{
+    printf("\n\t\t test \n");
+    char string[] = "asdasd";
+    printf("lengtn: %lu \n", strlen(string));
+    // fun_auto();
 }

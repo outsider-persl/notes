@@ -7,4 +7,9 @@ void fun_const();
 
 void fun_macro(int num);
 
+void test();
+
+int global_var;
+static int static_var = 2;
+
 #endif

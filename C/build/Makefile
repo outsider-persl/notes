@@ -10,7 +10,7 @@ BINDIR = ../bin
 # 源文件和目标文件
 SRCS = $(wildcard $(SRCDIR)/*.c)
 OBJS = $(patsubst $(SRCDIR)/%.c,$(OBJDIR)/%.o,$(SRCS))
-TARGET = $(BINDIR)/my_program
+TARGET = $(BINDIR)/exec
 
 # 链接规则
 $(TARGET): $(OBJS)

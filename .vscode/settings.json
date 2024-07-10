@@ -1,0 +1,8 @@
+{
+    "files.associations": {
+        "basic.h": "c",
+        "time.h": "c",
+        "locale.h": "c",
+        "wchar.h": "c"
+    }
+}
